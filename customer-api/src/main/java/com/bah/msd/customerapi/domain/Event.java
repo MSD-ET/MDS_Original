@@ -16,6 +16,7 @@ public class Event {
 	    private String time;
 	    private String location;
 	    private double price;
+	    
 		public long getId() {
 			return id;
 		}
