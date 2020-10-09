@@ -3,6 +3,9 @@ package com.bah.msd.customerapi.api;
 
 import com.bah.msd.customerapi.domain.Registration;
 import com.bah.msd.customerapi.service.RegistrationService;
+
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,10 +28,10 @@ public class RegistrationEndpoint {
     }
 
 
-    @GetMapping("/{date}")
-    public Registration findByDate(@PathVariable String date){
+    @GetMapping("/{registrationDate}")
+    public Registration findByDate(@PathVariable Date date){
         System.out.println("findByDate: " + date);
-        return RegistrationService.findByDate(date);
+        return registrationService.findByDate(date);
     }
 
 }

@@ -7,15 +7,14 @@ import javax.persistence.Id;
 @Entity
 public class Event {
 
-	    // Handled through 'auto-boxing'
+//	id: 100, code: 'CNF001', title: 'All-Java Conference', description: 'Lectures and exhibits
 	    @Id
 	    @GeneratedValue
 	    private long id; // same as Long
-
-	    private String name;
-	    private String time;
-	    private String location;
-	    private double price;
+	    private String code;
+	    private String title;
+	    private double description;
+	    
 	    
 		public long getId() {
 			return id;
@@ -23,35 +22,31 @@ public class Event {
 		public void setId(long id) {
 			this.id = id;
 		}
-		public String getName() {
-			return name;
+		public String getCode() {
+			return code;
 		}
-		public void setName(String name) {
-			this.name = name;
+		public void setCode(String code) {
+			this.code = code;
 		}
-		public String getTime() {
-			return time;
+		public String getTitle() {
+			return title;
 		}
-		public void setTime(String time) {
-			this.time = time;
+		public void setTitle(String title) {
+			this.title = title;
 		}
-		public String getLocation() {
-			return location;
+		public double getDescription() {
+			return description;
 		}
-		public void setLocation(String location) {
-			this.location = location;
-		}
-		public double getPrice() {
-			return price;
-		}
-		public void setPrice(double price) {
-			this.price = price;
+		public void setDescription(double description) {
+			this.description = description;
 		}
 		@Override
 		public String toString() {
-			return "Events [id=" + id + ", name=" + name + ", time=" + time + ", location=" + location + ", price="
-					+ price + "]";
+			return "Event [id=" + id + ", code=" + code + ", title=" + title + ", description=" + description + "]";
 		}
+	  
+	    
+		
 
 
 

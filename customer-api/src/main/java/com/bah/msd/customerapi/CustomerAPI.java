@@ -1,7 +1,7 @@
 package com.bah.msd.customerapi;
 import java.net.URI;
 import java.util.Iterator;
-import java.util.Optional;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +19,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.bah.msd.customerapi.domain.Customer;
 import com.bah.msd.customerapi.repository.CustomerRepository;
+import com.bah.msd.customerapi.service.CustomerService;
 
 import logging.Logging;
 
@@ -27,20 +28,30 @@ import logging.Logging;
 @RestController
 @RequestMapping("/customers")
 public class CustomerAPI {
+
+		
 		
 		@Autowired
-		CustomerRepository repo;
+		CustomerService service;
 
 		@GetMapping
 		public Iterable<Customer> getAll() {
-			return repo.findAll();
+			return service.findAll();
 		}
 
 		@GetMapping("/{customerId}")
-		public Optional<Customer> getCustomerById(@PathVariable("customerId") long id) {
+		public Customer getCustomerById(@PathVariable("customerId") long id) {
 			//return repo.findOne(id);
-			return repo.findById(id);
+			return service.findById(id);
 		}
+
+	
+//		@GetMapping("/{customerEmail}")
+//		public Customer getCustomerByEmail(@PathVariable("customerEmail") String email) {
+//			//return repo.findOne(id);
+//			return service.findByEmail(email);
+//		}
+//		
 		
 		@PostMapping
 		public ResponseEntity<?> addCustomer(@RequestBody Customer newCustomer, UriComponentsBuilder uri) {
@@ -48,38 +59,44 @@ public class CustomerAPI {
 				// Reject we'll assign the customer id
 				return ResponseEntity.badRequest().build();
 			}
-			newCustomer = repo.save(newCustomer);
+			newCustomer = service.save(newCustomer);
 			URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 					.buildAndExpand(newCustomer.getId()).toUri();
 			ResponseEntity<?> response = ResponseEntity.created(location).build();
 			return response;
-		}
-
-		//lookupCustomerByName GET
-		@GetMapping("/byname/{username}")
-		public ResponseEntity<?> lookupCustomerByNameGet(@PathVariable("username") String username,
-				UriComponentsBuilder uri) {
-			Logging.log("username: " + username);
-			
-			Iterator<Customer> customers = repo.findAll().iterator();
-			while(customers.hasNext()) {
-				Customer cust = customers.next();
-				if(cust.getName().equalsIgnoreCase(username)) {
-					ResponseEntity<?> response = ResponseEntity.ok(cust);
-					return response;				
-				}			
-			}
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+	//DO YOU NEED TO CREATE A POST MAPPING FOR NAME AND EMAIL?????????????????
 		}
 		
-		//lookupCustomerByName POST
+
+		//lookupCustomerByName GET
+		@GetMapping("/byname/{name}")
+		public ResponseEntity<?> lookupCustomerByNameGet(@PathVariable("name") String name,
+				UriComponentsBuilder uri) {
+			Logging.log("username: " + name);
+			
+		Customer newCustomer = service.findByName(name);
+		ResponseEntity<?> response = ResponseEntity.ok(newCustomer);
+		return response;
+		
+//			Iterator<Customer> customers = repo.findAll().iterator();
+//			while(customers.hasNext()) {
+//				Customer cust = customers.next();
+//				if(cust.getName().equalsIgnoreCase(username)) {
+//					ResponseEntity<?> response = ResponseEntity.ok(cust);
+//					return response;				
+//				}			
+//			}
+//			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		}
+		
+//		lookupCustomerByName POST
 		@PostMapping("/byname")
-		public ResponseEntity<?> lookupCustomerByNamePost(@RequestBody String username, UriComponentsBuilder uri) {
-			Logging.log("username: " + username);
-			Iterator<Customer> customers = repo.findAll().iterator();
+		public ResponseEntity<?> lookupCustomerByNamePost(@RequestBody String name, UriComponentsBuilder uri) {
+			Logging.log("username: " + name);
+			Iterator<Customer> customers = service.findAll().iterator();
 			while(customers.hasNext()) {
 				Customer cust = customers.next();
-				if(cust.getName().equals(username)) {
+				if(cust.getName().equals(name)) {
 					ResponseEntity<?> response = ResponseEntity.ok(cust);
 					return response;				
 				}			
@@ -96,14 +113,33 @@ public class CustomerAPI {
 			if (newCustomer.getId() != customerId || newCustomer.getName() == null || newCustomer.getEmail() == null) {
 				return ResponseEntity.badRequest().build();
 			}
-			newCustomer = repo.save(newCustomer);
+			newCustomer = service.save(newCustomer);
 			return ResponseEntity.ok().build();
 		}	
+		
+		@PutMapping("/{customername}")
+		public ResponseEntity<?> putCustomer(
+				@RequestBody Customer newCustomer,
+				@PathVariable("customerName") String customerName) 
+		{
+			if (newCustomer.getId() != 0 || newCustomer.getName() == customerName || newCustomer.getEmail() == null) {
+				return ResponseEntity.badRequest().build();
+			}
+			newCustomer = service.save(newCustomer);
+			return ResponseEntity.ok().build();
+		}	//POSSIBLY MAKE ONE FOR EMAIL?
 		
 		@DeleteMapping("/{customerId}")
 		public ResponseEntity<?> deleteCustomerById(@PathVariable("customerId") long id) {
 			// repo.delete(id);
-			repo.deleteById(id);
+			service.deleteById(id);
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+		}	
+		
+		@DeleteMapping("/{customerName}")
+		public ResponseEntity<?> deleteCustomerByName(@PathVariable("customerName") String name) {
+			// repo.delete(id);
+			service.deleteByName(name);
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 		}	
 		

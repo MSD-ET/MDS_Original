@@ -25,10 +25,14 @@ public class EventEndpoint {
     }
 
 
-    @GetMapping("/{name}")
-    public Event findByName(@PathVariable String name){
-        System.out.println("findByName: " + name);
-        return eventService.findByName(name);
+    @GetMapping("/{id}")
+    public Event findById(@PathVariable long id){
+        System.out.println("findById: " + id);
+        return eventService.findById(id);
     }
-
+    @GetMapping("/{code}")
+    public Event findByCode(@PathVariable String code){
+        System.out.println("findByCode: " + code);
+        return eventService.findByCode(code);
+    }
 }

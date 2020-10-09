@@ -27,29 +27,27 @@ import logging.Logging;
 public class EventAPI {
 	
 	@Autowired
-	EventRepository repo;
+	EventRepository service;
 
 	@GetMapping
 	public Iterable<Event> getAll() {
-		return repo.findAll();
+		return service.findAll();
 	}
 
-	@GetMapping("/{eventName}")
-	public Optional<Event> getEventByName(@PathVariable("eventName") String name) {
-		//return repo.findOne(id);
-		
-		return repo.findByName(name);
+	@GetMapping("/{eventId}")
+	public Optional<Event> getEventById(@PathVariable("eventId") long id) {
+		return service.findById(id);
 	}
 	
 	@PostMapping
-	public ResponseEntity<?> addCustomer(@RequestBody Event newEvent, UriComponentsBuilder uri) {
-		if (newEvent.get() != 0 || newEvent.getName() == null || newEvent.getEmail() == null) {
+	public ResponseEntity<?> addEvent(@RequestBody Event newEvent, UriComponentsBuilder uri) {
+		if (newEvent.getId() != 0 || newEvent.getName() == null || newEvent.getCode() == null) {
 			// Reject we'll assign the customer id
 			return ResponseEntity.badRequest().build();
 		}
-		newCustomer = repo.save(newCustomer);
-		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-				.buildAndExpand(newCustomer.getId()).toUri();
+		newEvent = service.save(newEvent);
+		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{name}") 
+				.buildAndExpand(newEvent.getId()).toUri();
 		ResponseEntity<?> response = ResponseEntity.created(location).build();
 		return response;
 	}
@@ -60,7 +58,7 @@ public class EventAPI {
 			UriComponentsBuilder uri) {
 		Logging.log("username: " + username);
 		
-		Iterator<Customer> customers = repo.findAll().iterator();
+		Iterator<Customer> customers = service.findAll().iterator();
 		while(customers.hasNext()) {
 			Customer cust = customers.next();
 			if(cust.getName().equalsIgnoreCase(username)) {
@@ -75,7 +73,7 @@ public class EventAPI {
 	@PostMapping("/byname")
 	public ResponseEntity<?> lookupCustomerByNamePost(@RequestBody String username, UriComponentsBuilder uri) {
 		Logging.log("username: " + username);
-		Iterator<Customer> customers = repo.findAll().iterator();
+		Iterator<Customer> customers = service.findAll().iterator();
 		while(customers.hasNext()) {
 			Customer cust = customers.next();
 			if(cust.getName().equals(username)) {
@@ -95,14 +93,14 @@ public class EventAPI {
 		if (newCustomer.getId() != customerId || newCustomer.getName() == null || newCustomer.getEmail() == null) {
 			return ResponseEntity.badRequest().build();
 		}
-		newCustomer = repo.save(newCustomer);
+		newCustomer = service.save(newCustomer);
 		return ResponseEntity.ok().build();
 	}	
 	
 	@DeleteMapping("/{customerId}")
 	public ResponseEntity<?> deleteCustomerById(@PathVariable("customerId") long id) {
 		// repo.delete(id);
-		repo.deleteById(id);
+		service.deleteById(id);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}	
 	
