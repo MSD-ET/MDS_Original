@@ -18,5 +18,7 @@ public interface EventService {
     long add(Event event);
     
     Event update(Event event);
+    
+	String deleteByCode(String code);
 
 }

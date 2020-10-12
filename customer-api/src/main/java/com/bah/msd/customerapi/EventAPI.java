@@ -39,45 +39,40 @@ public class EventAPI {
 		return service.findById(id);
 	}
 	
-	@PostMapping
+	@PostMapping //post id
 	public ResponseEntity<?> addEvent(@RequestBody Event newEvent, UriComponentsBuilder uri) {
-		if (newEvent.getId() != 0 || newEvent.getName() == null || newEvent.getCode() == null) {
+		if (newEvent.getId() != 0 || newEvent.getCode() == null) {
 			// Reject we'll assign the customer id
 			return ResponseEntity.badRequest().build();
 		}
 		newEvent = service.save(newEvent);
-		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{name}") 
+		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}") 
 				.buildAndExpand(newEvent.getId()).toUri();
 		ResponseEntity<?> response = ResponseEntity.created(location).build();
 		return response;
 	}
 
-	//lookupCustomerByName GET
-	@GetMapping("/byname/{username}")
-	public ResponseEntity<?> lookupCustomerByNameGet(@PathVariable("username") String username,
+	//lookupEventByCode GET
+	@GetMapping("/bycode/{eventcode}")
+	public ResponseEntity<?> lookupEventByCodeGet(@PathVariable("eventcode") String eventCode,
 			UriComponentsBuilder uri) {
-		Logging.log("username: " + username);
+		Logging.log("eventcode: " + eventCode);
 		
-		Iterator<Customer> customers = service.findAll().iterator();
-		while(customers.hasNext()) {
-			Customer cust = customers.next();
-			if(cust.getName().equalsIgnoreCase(username)) {
-				ResponseEntity<?> response = ResponseEntity.ok(cust);
-				return response;				
-			}			
-		}
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		Event newEvent = service.findByCode(eventCode);
+		ResponseEntity<?> response = ResponseEntity.ok(newEvent);
+		return response;
+		
 	}
 	
-	//lookupCustomerByName POST
-	@PostMapping("/byname")
-	public ResponseEntity<?> lookupCustomerByNamePost(@RequestBody String username, UriComponentsBuilder uri) {
-		Logging.log("username: " + username);
-		Iterator<Customer> customers = service.findAll().iterator();
-		while(customers.hasNext()) {
-			Customer cust = customers.next();
-			if(cust.getName().equals(username)) {
-				ResponseEntity<?> response = ResponseEntity.ok(cust);
+	//lookupEventByCode POST
+	@PostMapping("/bycode")
+	public ResponseEntity<?> lookupEventByCodePost(@RequestBody String eventCode, UriComponentsBuilder uri) {
+		Logging.log("eventcode: " + eventCode);
+		Iterator<Event> events = service.findAll().iterator();
+		while(events.hasNext()) {
+			Event evt = events.next();
+			if(evt.getCode().equals(eventCode)) {
+				ResponseEntity<?> response = ResponseEntity.ok(evt);
 				return response;				
 			}			
 		}
@@ -85,22 +80,29 @@ public class EventAPI {
 	}	
 	
 	
-	@PutMapping("/{customerId}")
+	@PutMapping("/{eventId}")
 	public ResponseEntity<?> putCustomer(
-			@RequestBody Customer newCustomer,
-			@PathVariable("customerId") long customerId) 
+			@RequestBody Event newEvent,
+			@PathVariable("eventId") long eventId) 
 	{
-		if (newCustomer.getId() != customerId || newCustomer.getName() == null || newCustomer.getEmail() == null) {
+		if (newEvent.getId() != eventId || newEvent.getCode() == null ) {
 			return ResponseEntity.badRequest().build();
 		}
-		newCustomer = service.save(newCustomer);
+		newEvent = service.save(newEvent);
 		return ResponseEntity.ok().build();
 	}	
 	
-	@DeleteMapping("/{customerId}")
-	public ResponseEntity<?> deleteCustomerById(@PathVariable("customerId") long id) {
+	@DeleteMapping("/{eventId}")
+	public ResponseEntity<?> deleteEventById(@PathVariable("eventId") long id) {
 		// repo.delete(id);
 		service.deleteById(id);
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+	}	
+
+	@DeleteMapping("/{eventCode}")
+	public ResponseEntity<?> deleteEventByCode(@PathVariable("eventCode") String code) {
+		// repo.delete(id);
+		service.deleteByCode(code);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}	
 	

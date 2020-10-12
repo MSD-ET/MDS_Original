@@ -20,4 +20,10 @@ public interface RegistrationService {
     
     Registration update(Registration registration);
 
+	Registration save(Registration newRegistration);
+
+	Registration deleteByDate(Date date);
+
+
+
 }

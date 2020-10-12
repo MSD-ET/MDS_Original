@@ -15,6 +15,8 @@ import com.bah.msd.customerapi.domain.Event;
 
 		Event findByCode(String code);
 
+		String deleteByCode(String code);
+
 		
 	
 

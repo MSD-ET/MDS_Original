@@ -55,4 +55,10 @@ public class EventServiceImpl implements EventService {
 		return repository.findByCode(code);
 	}
 
+	@Override
+	public String deleteByCode(String code) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

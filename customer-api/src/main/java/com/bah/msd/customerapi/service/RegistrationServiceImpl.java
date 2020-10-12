@@ -64,4 +64,18 @@ public class RegistrationServiceImpl implements RegistrationService {
 		// TODO Auto-generated method stub
 		return repository.findByDate(date);
 	}
+
+
+	@Override
+	public Registration save(Registration newRegistration) {
+		// TODO Auto-generated method stub
+		return newRegistration;
+	}
+
+
+	@Override
+	public Registration deleteByDate(Date date) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
