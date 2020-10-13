@@ -1,10 +1,14 @@
 package com.bah.msd.api.domain;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
+
 
 @Entity
+//@Table(name = "CUSTOMERS")
 public class Customer {
 
     // Handled through 'auto-boxing'
@@ -12,8 +16,13 @@ public class Customer {
     @GeneratedValue
     private long id; // same as Long
 
+    //@Column(name = "CUSTOMER_NAME")
     private String name;
+    
+    //@Column(name = "EMAIL")
     private String email;
+    
+    //@Column(name = "PASSWORD")
     private String password;
 
 

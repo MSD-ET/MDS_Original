@@ -5,13 +5,17 @@ import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 //id: 1, event_id: 1, customer_id: 1, registration_date: '2019-01-01', notes: 'looking forward 
 @Entity
+//@Table(name = "REGISTRATIONS")
 public class Registration {
+	
 	@Id
     @GeneratedValue
 	private Long id;
+	
 	private Long event_id;
 	private Long customer_id;
 	private Date registration_date;

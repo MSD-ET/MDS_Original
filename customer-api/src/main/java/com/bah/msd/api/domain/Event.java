@@ -1,19 +1,24 @@
 package com.bah.msd.api.domain;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 
 @Entity
+//@Table(name = "EVENTS")
 public class Event {
 
 	//id: 100, code: 'CNF001', title: 'All-Java Conference', description: 'Lectures and exhibits
     	@Id
 	    @GeneratedValue
 	    private long id; // same as Long
+    	
+    	 //@Column(name="EVENT_CODE")
 	    private String code;
 	    private String title;
-	    private double description;
+	    private String description;
 	    
 	    
 		public long getId() {
@@ -34,10 +39,10 @@ public class Event {
 		public void setTitle(String title) {
 			this.title = title;
 		}
-		public double getDescription() {
+		public String getDescription() {
 			return description;
 		}
-		public void setDescription(double description) {
+		public void setDescription(String description) {
 			this.description = description;
 		}
 		@Override
