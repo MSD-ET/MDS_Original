@@ -1,4 +1,4 @@
-package com.bah.msd.customerapi.domain;
+package com.bah.msd.api.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

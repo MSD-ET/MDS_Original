@@ -1,4 +1,4 @@
-package com.bah.msd.customerapi.domain;
+package com.bah.msd.api.domain;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -7,8 +7,8 @@ import javax.persistence.Id;
 @Entity
 public class Event {
 
-//	id: 100, code: 'CNF001', title: 'All-Java Conference', description: 'Lectures and exhibits
-	    @Id
+	//id: 100, code: 'CNF001', title: 'All-Java Conference', description: 'Lectures and exhibits
+    	@Id
 	    @GeneratedValue
 	    private long id; // same as Long
 	    private String code;
@@ -22,8 +22,8 @@ public class Event {
 		public void setId(long id) {
 			this.id = id;
 		}
-		public String getCode() {
-			return code;
+	public String getCode() {
+		return code;
 		}
 		public void setCode(String code) {
 			this.code = code;

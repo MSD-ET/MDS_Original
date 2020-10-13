@@ -1,4 +1,4 @@
-package com.bah.msd.customerapi;
+package com.bah.msd.api;
 import java.net.URI;
 import java.util.Iterator;
 import java.util.Optional;
@@ -17,8 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.bah.msd.customerapi.domain.Event;
-import com.bah.msd.customerapi.repository.EventRepository;
+import com.bah.msd.api.domain.Event;
+import com.bah.msd.api.repository.EventRepository;
+import com.bah.msd.api.service.EventService;
 
 import logging.Logging;
 
@@ -27,7 +28,7 @@ import logging.Logging;
 public class EventAPI {
 	
 	@Autowired
-	EventRepository service;
+	EventService service;
 
 	@GetMapping
 	public Iterable<Event> getAll() {
@@ -35,7 +36,7 @@ public class EventAPI {
 	}
 
 	@GetMapping("/{eventId}")
-	public Optional<Event> getEventById(@PathVariable("eventId") long id) {
+	public Event getEventById(@PathVariable("eventId") long id) {
 		return service.findById(id);
 	}
 	
@@ -46,39 +47,34 @@ public class EventAPI {
 			return ResponseEntity.badRequest().build();
 		}
 		newEvent = service.save(newEvent);
-		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}") 
+		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{eventId}") 
 				.buildAndExpand(newEvent.getId()).toUri();
 		ResponseEntity<?> response = ResponseEntity.created(location).build();
 		return response;
 	}
 
 	//lookupEventByCode GET
-	@GetMapping("/bycode/{eventcode}")
-	public ResponseEntity<?> lookupEventByCodeGet(@PathVariable("eventcode") String eventCode,
-			UriComponentsBuilder uri) {
-		Logging.log("eventcode: " + eventCode);
-		
-		Event newEvent = service.findByCode(eventCode);
-		ResponseEntity<?> response = ResponseEntity.ok(newEvent);
-		return response;
-		
-	}
+	/*
+	 * @GetMapping("/bycode/{eventcode}") public ResponseEntity<?>
+	 * lookupEventByCodeGet(@PathVariable("eventcode") String eventCode,
+	 * UriComponentsBuilder uri) { Logging.log("eventcode: " + eventCode);
+	 * 
+	 * Event newEvent = service.findByCode(eventCode); ResponseEntity<?> response =
+	 * ResponseEntity.ok(newEvent); return response;
+	 * 
+	 * }
+	 */
 	
 	//lookupEventByCode POST
-	@PostMapping("/bycode")
-	public ResponseEntity<?> lookupEventByCodePost(@RequestBody String eventCode, UriComponentsBuilder uri) {
-		Logging.log("eventcode: " + eventCode);
-		Iterator<Event> events = service.findAll().iterator();
-		while(events.hasNext()) {
-			Event evt = events.next();
-			if(evt.getCode().equals(eventCode)) {
-				ResponseEntity<?> response = ResponseEntity.ok(evt);
-				return response;				
-			}			
-		}
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-	}	
-	
+	/*
+	 * @PostMapping("/bycode") public ResponseEntity<?>
+	 * lookupEventByCodePost(@RequestBody String eventCode, UriComponentsBuilder
+	 * uri) { Logging.log("eventcode: " + eventCode); Iterator<Event> events =
+	 * service.findAll().iterator(); while(events.hasNext()) { Event evt =
+	 * events.next(); if(evt.getCode().equals(eventCode)) { ResponseEntity<?>
+	 * response = ResponseEntity.ok(evt); return response; } } return
+	 * ResponseEntity.status(HttpStatus.BAD_REQUEST).build(); }
+	 */
 	
 	@PutMapping("/{eventId}")
 	public ResponseEntity<?> putCustomer(
@@ -99,12 +95,11 @@ public class EventAPI {
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}	
 
-	@DeleteMapping("/{eventCode}")
-	public ResponseEntity<?> deleteEventByCode(@PathVariable("eventCode") String code) {
-		// repo.delete(id);
-		service.deleteByCode(code);
-		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-	}	
-	
+	/*
+	 * @DeleteMapping("/{eventCode}") public ResponseEntity<?>
+	 * deleteEventByCode(@PathVariable("eventCode") String code) { //
+	 * repo.delete(id); service.deleteByCode(code); return
+	 * ResponseEntity.status(HttpStatus.NO_CONTENT).build(); }
+	 */
 
 }

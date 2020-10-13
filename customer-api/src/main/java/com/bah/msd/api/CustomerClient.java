@@ -1,7 +1,7 @@
-package com.bah.msd.customerapi.api;
+/*package com.bah.msd.api;
 
 
-import com.bah.msd.customerapi.domain.Customer;
+import com.bah.msd.api.domain.Customer;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,4 +22,5 @@ public class CustomerClient {
         System.out.println("customer client : " + c);
         return c;
     }
-}
+}*/
+

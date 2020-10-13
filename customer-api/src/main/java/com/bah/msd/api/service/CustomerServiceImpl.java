@@ -1,7 +1,8 @@
-package com.bah.msd.customerapi.service;
+package com.bah.msd.api.service;
 
-import com.bah.msd.customerapi.domain.Customer;
-import com.bah.msd.customerapi.repository.CustomerRepository;
+import com.bah.msd.api.domain.Customer;
+import com.bah.msd.api.repository.CustomerRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +24,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Customer findById(long id) {
+    public Customer findById(Long id) {
 
         // Java 8 feature called (Optional (Customer) ) (NPE)
         return ( repository.findById(id) ).get();
@@ -35,29 +36,11 @@ public class CustomerServiceImpl implements CustomerService {
 		return (repository.findByName(name));
 	}
 
-	@Override
-	public int deleteById(long id) {
-		// TODO Auto-generated method stub
-		return repository.deleteById(id);
-	}
-
-	@Override
-	public long add(Customer customer) {
-		// TODO Auto-generated method stub
-		return repository.add(customer);
-	}
-
-	@Override
-	public Customer update(Customer customer) {
-		// TODO Auto-generated method stub
-		return repository.update(customer);
-	}
-
-	@Override
-	public Customer findByEmail(String email) {
-		// TODO Auto-generated method stub
-		return repository.findByEmail(email);
-	}
+	
+	/*
+	 * @Override public Customer findByEmail(String email) { // TODO Auto-generated
+	 * method stub return repository.findByEmail(email); }
+	 */
 
 	@Override
 	public String deleteByName(String name) {
@@ -69,6 +52,12 @@ public class CustomerServiceImpl implements CustomerService {
 	public Customer save(Customer newCustomer) {
 		// TODO Auto-generated method stub
 		return repository.save(newCustomer);
+	}
+
+	@Override
+	public void deleteById(Long id) {
+		// TODO Auto-generated method stub
+		this.repository.deleteById(id);
 	}
 
     
