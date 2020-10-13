@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.bah.msd.api.domain.Customer;
 import com.bah.msd.api.domain.Registration;
 import com.bah.msd.api.service.RegistrationService;
 
@@ -44,8 +45,7 @@ public class RegistrationApi {
 	
 	@PostMapping
 	public ResponseEntity<?> addRegistration (@RequestBody Registration newRegistration, UriComponentsBuilder uri) {
-		if (newRegistration.getId() <= 0 || newRegistration.getNotes() == null || newRegistration.getRegistration_date() == null) {
-			// Reject we'll assign the customer id
+		if (newRegistration.getId() > 0 || newRegistration.getNotes() == null || newRegistration.getRegistration_date() == null) {
 			return ResponseEntity.badRequest().build();
 		}
 		newRegistration = service.save(newRegistration);
@@ -54,62 +54,27 @@ public class RegistrationApi {
 		ResponseEntity<?> response = ResponseEntity.created(location).build();
 		return response;
 		
-//DO YOU NEED TO CREATE A POST MAPPING FOR NAME AND EMAIL?????????????????
 	}
 	
-
-	//lookupCustomerByName GET
-	/*
-	 * @GetMapping("/bydate/{date}") public ResponseEntity<?>
-	 * lookupRegistrationByDateGet(@PathVariable("date") Date registration_date,
-	 * UriComponentsBuilder uri) { Logging.log("registationdate: " +
-	 * registration_date);
-	 * 
-	 * Registration newRegistration =
-	 * service.findByRegistration_Date(registration_date); ResponseEntity<?>
-	 * response = ResponseEntity.ok(newRegistration); return response; }
-	 */
-	
-	/*
-	 * @PostMapping("/bydate") public ResponseEntity<?>
-	 * lookupRegistrationByPost(@RequestBody Date registration_date,
-	 * UriComponentsBuilder uri) { Logging.log("registrationdate: " +
-	 * registration_date); Iterator<Registration> registrations =
-	 * service.findAll().iterator(); while(registrations.hasNext()) { Registration
-	 * reg = registrations.next();
-	 * if(reg.getRegistration_date().equals(registration_date)) { ResponseEntity<?>
-	 * response = ResponseEntity.ok(reg); return response; } } return
-	 * ResponseEntity.status(HttpStatus.BAD_REQUEST).build(); }
-	 */
 	
 	
-	@PutMapping("/{registrationId}")
+	
+	@PutMapping
 	public ResponseEntity<?> putRegistration(
-			@RequestBody Registration newRegistration,
-			@PathVariable("registrationId") long registrationId) 
+			@RequestBody Registration newRegistration) 
 	{
-		if (newRegistration.getId() != registrationId || newRegistration.getNotes() == null) {
+		if (newRegistration.getId() < 0 || newRegistration.getNotes() == null) {
 			return ResponseEntity.badRequest().build();
 		}
 		newRegistration = service.save(newRegistration);
 		return ResponseEntity.ok().build();
 	}	
 	
-	/*
-	 * @PutMapping("/{registrationDate}") public ResponseEntity<?> putRegistration(
-	 * 
-	 * @RequestBody Registration newRegistration,
-	 * 
-	 * @PathVariable("registrationDate") Date registrationDate) { if
-	 * (newRegistration.getId() != 0 || newRegistration.getRegistration_date() ==
-	 * registrationDate ) { return ResponseEntity.badRequest().build(); }
-	 * newRegistration = service.save(newRegistration); return
-	 * ResponseEntity.ok().build(); }
-	 */	
+	
 	
 	@DeleteMapping("/{registrationId}")
-	public ResponseEntity<?> deleteCustomerById(@PathVariable("registationId") long id) {
-		// repo.delete(id);
+	public ResponseEntity<?> deleteCustomerById(@PathVariable("registrationId") long id) {
+		
 		service.deleteById(id);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}	

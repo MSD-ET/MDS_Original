@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.bah.msd.api.domain.Customer;
 import com.bah.msd.api.domain.Event;
 import com.bah.msd.api.repository.EventRepository;
 import com.bah.msd.api.service.EventService;
@@ -42,59 +43,38 @@ public class EventAPI {
 	
 	@PostMapping //post id
 	public ResponseEntity<?> addEvent(@RequestBody Event newEvent, UriComponentsBuilder uri) {
-		if (newEvent.getId() != 0 || newEvent.getCode() == null) {
+		if (newEvent.getId() > 0 || newEvent.getCode() == null) {
 			// Reject we'll assign the customer id
 			return ResponseEntity.badRequest().build();
 		}
 		newEvent = service.save(newEvent);
-		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{eventId}") 
+		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}") 
 				.buildAndExpand(newEvent.getId()).toUri();
 		ResponseEntity<?> response = ResponseEntity.created(location).build();
 		return response;
 	}
 
-	//lookupEventByCode GET
-	/*
-	 * @GetMapping("/bycode/{eventcode}") public ResponseEntity<?>
-	 * lookupEventByCodeGet(@PathVariable("eventcode") String eventCode,
-	 * UriComponentsBuilder uri) { Logging.log("eventcode: " + eventCode);
-	 * 
-	 * Event newEvent = service.findByCode(eventCode); ResponseEntity<?> response =
-	 * ResponseEntity.ok(newEvent); return response;
-	 * 
-	 * }
-	 */
 	
-	//lookupEventByCode POST
-	/*
-	 * @PostMapping("/bycode") public ResponseEntity<?>
-	 * lookupEventByCodePost(@RequestBody String eventCode, UriComponentsBuilder
-	 * uri) { Logging.log("eventcode: " + eventCode); Iterator<Event> events =
-	 * service.findAll().iterator(); while(events.hasNext()) { Event evt =
-	 * events.next(); if(evt.getCode().equals(eventCode)) { ResponseEntity<?>
-	 * response = ResponseEntity.ok(evt); return response; } } return
-	 * ResponseEntity.status(HttpStatus.BAD_REQUEST).build(); }
-	 */
 	
-	@PutMapping("/{eventId}")
-	public ResponseEntity<?> putCustomer(
-			@RequestBody Event newEvent,
-			@PathVariable("eventId") long eventId) 
+	@PutMapping
+	public ResponseEntity<?> putEvent(@RequestBody Event newEvent) 
 	{
-		if (newEvent.getId() != eventId || newEvent.getCode() == null ) {
+		if (newEvent.getId() < 0 || newEvent.getCode() == null ) {
 			return ResponseEntity.badRequest().build();
 		}
 		newEvent = service.save(newEvent);
 		return ResponseEntity.ok().build();
 	}	
 	
+	
+	
 	@DeleteMapping("/{eventId}")
 	public ResponseEntity<?> deleteEventById(@PathVariable("eventId") long id) {
-		// repo.delete(id);
+		
 		service.deleteById(id);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}	
-
+	
 	/*
 	 * @DeleteMapping("/{eventCode}") public ResponseEntity<?>
 	 * deleteEventByCode(@PathVariable("eventCode") String code) { //

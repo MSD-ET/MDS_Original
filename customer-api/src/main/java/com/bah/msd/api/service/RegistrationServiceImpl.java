@@ -34,11 +34,6 @@ public class RegistrationServiceImpl implements RegistrationService {
 	 */
 
 
-	@Override
-	public Registration deleteById(Long id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 
 	/*
@@ -50,7 +45,14 @@ public class RegistrationServiceImpl implements RegistrationService {
 	@Override
 	public Registration save(Registration newRegistration) {
 		// TODO Auto-generated method stub
-		return newRegistration;
+		return repository.save(newRegistration);
+	}
+
+
+	@Override
+	public void deleteById(Long id) {
+		// TODO Auto-generated method stub
+		this.repository.deleteById(id);
 	}
 
 

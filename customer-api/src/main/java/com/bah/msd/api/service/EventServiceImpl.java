@@ -18,34 +18,34 @@ public class EventServiceImpl implements EventService {
         return repository.findAll();
     }
 
-    @Override
-    public Event findById(Long id) {
+    
 
-        // Java 8 feature called (Optional (Customer) ) (NPE)
-    	 return ( repository.findById(id) ).get();
-    }
 
 	
-	@Override
-	public Event deleteById(Long id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	//@Override
-	/*
-	 * public Event findByCode(String code) { // TODO Auto-generated method stub
-	 * return repository.findByCode(code); }
-	 */
-
-	/*
-	 * @Override public String deleteByCode(String code) { // TODO Auto-generated
-	 * method stub return null; }
-	 */
 	@Override
 	public Event save(Event newEvent) {
 		// TODO Auto-generated method stub
 		return repository.save(newEvent);
+	}
+
+
+
+
+
+	@Override
+	public Event findById(Long id) {
+		// TODO Auto-generated method stub
+		return  ( repository.findById(id) ).get();
+	}
+
+
+
+
+
+	@Override
+	public void deleteById(Long id) {
+		// TODO Auto-generated method stub
+		this.repository.deleteById(id);
 	}
 
 }

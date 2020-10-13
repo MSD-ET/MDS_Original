@@ -2,6 +2,7 @@ package com.bah.msd.api.domain;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -12,7 +13,7 @@ public class Event {
 
 	//id: 100, code: 'CNF001', title: 'All-Java Conference', description: 'Lectures and exhibits
     	@Id
-	    @GeneratedValue
+    	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	    private long id; // same as Long
     	
     	 //@Column(name="EVENT_CODE")

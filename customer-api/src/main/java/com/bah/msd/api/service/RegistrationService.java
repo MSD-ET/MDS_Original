@@ -14,8 +14,9 @@ public interface RegistrationService {
     
     //Registration findByRegistration_Date(Date registration_date);
 
-    Registration deleteById(Long id);
 
+	public void deleteById(Long id);
+	
 	Registration save(Registration newRegistration);
 
 	//Registration deleteByDate(Date registration_date);

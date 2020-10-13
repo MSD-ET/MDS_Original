@@ -11,7 +11,8 @@ public interface EventService {
     
    // Event findByCode(String code);
 
-    Event deleteById(Long id);
+
+	public void deleteById(Long id);
    
     Event save(Event newEvent);
     
