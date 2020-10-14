@@ -25,7 +25,7 @@ import com.bah.msd.api.service.EventService;
 import logging.Logging;
 
 @RestController
-@RequestMapping("/events")
+@RequestMapping("/api/events/")
 public class EventAPI {
 	
 	@Autowired

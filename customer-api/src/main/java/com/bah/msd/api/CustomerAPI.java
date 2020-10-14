@@ -24,7 +24,7 @@ import com.bah.msd.api.service.CustomerService;
 import logging.Logging;
 
 @RestController
-@RequestMapping("/customers")
+@RequestMapping("/api/customers")
 public class CustomerAPI {
 
 	@Autowired

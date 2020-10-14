@@ -25,7 +25,7 @@ import com.bah.msd.api.service.RegistrationService;
 import logging.Logging;
 
 @RestController
-@RequestMapping("/registrations")
+@RequestMapping("/api/registrations/")
 public class RegistrationApi {
 
 	@Autowired
