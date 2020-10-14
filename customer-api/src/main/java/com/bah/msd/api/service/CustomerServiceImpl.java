@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 // PROXY Pattern
 // IoC
@@ -31,7 +32,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
 	@Override
-	public Customer findByName(String name) {
+	public Optional<Customer> findByName(String name) {
 		// TODO Auto-generated method stub
 		return (repository.findByName(name));
 	}

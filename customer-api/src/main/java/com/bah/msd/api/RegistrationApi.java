@@ -25,7 +25,7 @@ import com.bah.msd.api.service.RegistrationService;
 import logging.Logging;
 
 @RestController
-@RequestMapping("/api/registrations/")
+@RequestMapping("/api/registrations")
 public class RegistrationApi {
 
 	@Autowired
@@ -45,7 +45,7 @@ public class RegistrationApi {
 	
 	@PostMapping
 	public ResponseEntity<?> addRegistration (@RequestBody Registration newRegistration, UriComponentsBuilder uri) {
-		if (newRegistration.getId() > 0 || newRegistration.getNotes() == null || newRegistration.getRegistration_date() == null) {
+		if (newRegistration.getId() != 0 || newRegistration.getNotes() == null || newRegistration.getRegistration_date() == null) {
 			return ResponseEntity.badRequest().build();
 		}
 		newRegistration = service.save(newRegistration);
@@ -59,11 +59,12 @@ public class RegistrationApi {
 	
 	
 	
-	@PutMapping
+	@PutMapping("/{eventId}")
 	public ResponseEntity<?> putRegistration(
-			@RequestBody Registration newRegistration) 
+			@RequestBody Registration newRegistration,
+			@PathVariable("eventId")long eventId ) 
 	{
-		if (newRegistration.getId() < 0 || newRegistration.getNotes() == null) {
+		if (newRegistration.getId() == null || newRegistration.getCustomer_id() == null) {
 			return ResponseEntity.badRequest().build();
 		}
 		newRegistration = service.save(newRegistration);

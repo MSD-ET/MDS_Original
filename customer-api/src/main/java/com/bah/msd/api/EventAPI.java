@@ -25,7 +25,7 @@ import com.bah.msd.api.service.EventService;
 import logging.Logging;
 
 @RestController
-@RequestMapping("/api/events/")
+@RequestMapping("/api/events")
 public class EventAPI {
 	
 	@Autowired
@@ -43,7 +43,7 @@ public class EventAPI {
 	
 	@PostMapping //post id
 	public ResponseEntity<?> addEvent(@RequestBody Event newEvent, UriComponentsBuilder uri) {
-		if (newEvent.getId() > 0 || newEvent.getCode() == null) {
+		if (newEvent.getId() != 0 || newEvent.getCode() == null) {
 			// Reject we'll assign the customer id
 			return ResponseEntity.badRequest().build();
 		}
@@ -56,10 +56,10 @@ public class EventAPI {
 
 	
 	
-	@PutMapping
-	public ResponseEntity<?> putEvent(@RequestBody Event newEvent) 
+	@PutMapping("/{eventId}")
+	public ResponseEntity<?> putEvent(@RequestBody Event newEvent, @PathVariable ("eventId")long eventId) 
 	{
-		if (newEvent.getId() < 0 || newEvent.getCode() == null ) {
+		if (newEvent.getId() != eventId  || newEvent.getCode() == null || newEvent.getTitle()==null || newEvent.getDescription() ==null) {
 			return ResponseEntity.badRequest().build();
 		}
 		newEvent = service.save(newEvent);

@@ -2,6 +2,7 @@ package com.bah.msd.api;
 
 import java.net.URI;
 import java.util.Iterator;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -45,7 +46,8 @@ public class CustomerAPI {
 
 	@PostMapping
 	public ResponseEntity<?> addCustomer(@RequestBody Customer newCustomer, UriComponentsBuilder uri) {
-		if (newCustomer.getId() > 0 || newCustomer.getName() == null || newCustomer.getEmail() == null) {
+		System.out.println("Customer added: " + newCustomer);
+		if (newCustomer.getId() != 0 || newCustomer.getName() == null || newCustomer.getEmail() == null) {
 			System.out.println(" Reject we'll assign the customer id: " + newCustomer);// Reject we'll assign the customer id
 			return ResponseEntity.badRequest().build();
 		}
@@ -60,17 +62,25 @@ public class CustomerAPI {
 	// lookupCustomerByName GET
 	@GetMapping("/byname/{name}")
 	public ResponseEntity<?> lookupCustomerByNameGet(@PathVariable("name") String name, UriComponentsBuilder uri) {
+		System.out.println("lookupCustomerByNameGet: " + name);
+		
 		Logging.log("username: " + name);
-
-		Customer newCustomer = service.findByName(name);
-		ResponseEntity<?> response = ResponseEntity.ok(newCustomer);
-		return response;
+		Optional<Customer> result = service.findByName(name);
+		if(result.isPresent()) {
+			return ResponseEntity.ok(result.get());
+			
+		}
+		else {
+			return ResponseEntity.badRequest().build();
+		}
+		
 
 	}
 
-	@PutMapping
-	public ResponseEntity<?> putCustomer(@RequestBody Customer newCustomer) {
-		if (newCustomer.getId() < 0  || newCustomer.getName() == null || newCustomer.getEmail() == null) {
+	@PutMapping("/{id}")
+	public ResponseEntity<?> putCustomer(@RequestBody Customer newCustomer, @PathVariable long id) {
+		System.out.println("Create new ID: " + id + " For customer: " + newCustomer);
+		if (newCustomer.getId() != id  || newCustomer.getName() == null || newCustomer.getEmail() == null) {
 			System.out.println("Did not work: " + newCustomer);
 			return ResponseEntity.badRequest().build();
 			

@@ -1,5 +1,7 @@
 package com.bah.msd.api.service;
 
+import java.util.Optional;
+
 import com.bah.msd.api.domain.Customer;
 
 /**
@@ -11,7 +13,7 @@ public interface CustomerService {
 
     Customer findById(Long id);
     
-    Customer findByName(String name);
+    Optional<Customer> findByName(String name);
     
 	String deleteByName(String name);
 	
