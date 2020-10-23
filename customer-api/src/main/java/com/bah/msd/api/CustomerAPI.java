@@ -25,7 +25,7 @@ import com.bah.msd.api.service.CustomerService;
 import logging.Logging;
 
 @RestController
-@RequestMapping("/api/customers")
+@RequestMapping("/customers")
 public class CustomerAPI {
 
 	@Autowired
@@ -56,7 +56,7 @@ public class CustomerAPI {
 				.buildAndExpand(newCustomer.getId()).toUri();
 		ResponseEntity<?> response = ResponseEntity.created(location).build();
 		return response;
-		// DO YOU NEED TO CREATE A POST MAPPING FOR NAME AND EMAIL?????????????????
+		// DO YOU NEED TO CREATE A POST MAPPING FOR NAME AND 
 	}
 
 	// lookupCustomerByName GET
